@@ -1,0 +1,16 @@
+{
+  "name": "dwcle-template-sonarqube",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "SonarQube local con Docker para analizar la calidad del proyecto",
+  "scripts": {
+    "up": "./prepare-volumes.sh && docker compose up -d",
+    "down": "docker compose down",
+    "logs": "docker compose logs -f sonarqube",
+    "sonar:scan": "sonar-scanner"
+  },
+  "devDependencies": {
+    "sonarqube-scanner": "^5.0.0"
+  }
+}

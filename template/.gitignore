@@ -1,0 +1,27 @@
+# Dependencias y salidas de build
+node_modules/
+dist/
+coverage/
+
+# Variables de entorno (nunca se suben al repositorio)
+.env
+.env.*
+!.env.example
+
+# Registros y temporales
+*.log
+npm-debug.log*
+.vite/
+.cache/
+
+# Editores y sistema
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# SonarQube local (volúmenes de Docker y configuración con token)
+apps/sonarqube/docker/
+apps/sonarqube/sonar-project.properties
+.scannerwork/

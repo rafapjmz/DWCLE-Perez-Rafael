@@ -1,0 +1,141 @@
+@startuml
+
+package Database <<Database>> {
+
+}
+node Backend {
+    class Controllers{}
+}
+note right: Endpoints
+
+Backend --> Database
+
+package hospital {
+    
+
+    package commons {
+
+      class HttpService<T>{
+          + get<T>()
+          + post<T>()
+          + put<T>()
+          + delete<T>()
+      }
+
+      class StoreService<T> {
+          + findOne<T>(key: string): T
+          + addOrUpdate<T>(key: string, value: T): void
+          + find<T>(): List<T>
+      }
+      class RepositoryService {
+      }
+      RepositoryService -[dashed]-> Dexie: use
+      Dexie -[dashed]-> indexedDB: use
+
+
+     interface Store<T><<interface>>{
+        + findOne<T>(key: string): T
+        + addOrUpdate<T>(key: string, value: T): void
+        + find<T>(): List<T>
+     }
+     class localStorage implements Store {}
+     class sessionStorage implements Store {}
+     class indexedDB implements Store {}
+
+      StoreService -[dashed]-> Store: "use"
+
+    }
+
+    package services {
+        class HospitalService {
+              
+            - hospital: Hospital  
+            - httpService: HttpService
+            - storeService: StoreService
+            - repositoryService: RepositoryService
+            + add(patient: Patient): Patient
+            + remove(uuid: string): void
+            + update(uuid: string, patient: Patient): Patient
+            + findById(uuid: string): Patient
+            + findAll(): List<Patient>
+            + findAllRetired(): List<Patient>
+            + findAllForeign(): List<Patient>
+        }
+        note right: Use \nStoreService, \n HttpService \n and Hospital
+
+        HospitalService o-- HttpService
+        HospitalService o-- StoreService
+        HospitalService o-- RepositoryService
+
+  
+    }   
+    
+    package views {
+        class ListView{}
+        class FormView{}
+        class PatientForm<<component>> {}
+        class RetiredForm<<component>> {}
+        class ForeignForm<<component>> {}
+
+        FormView <.. PatientForm: "Includes"
+        FormView <.. RetiredForm: "Includes"
+        FormView <.. ForeignForm: "Includes"
+
+    }
+    package controllers {
+        class HospitalController {
+            constructor(hospitalService: HospitalService, formView: FormView, listView: ListView)
+
+        }
+
+        HospitalController o-- HospitalService
+        HospitalController o-- FormView 
+        HospitalController o-- ListView
+    }
+    package models {
+        abstract class Patient {
+            - _name: string
+            - _dni: string 
+            - _surname: string 
+            + get name(): string
+            + set name(value: string): void
+        }
+
+        class ForeignPatient extends Patient {
+        }
+
+        class RetiredPatient extends Patient {}
+        class DefaultPatient extends Patient {}
+       
+
+        class Hospital {
+            - patients: Map<UUID, Patient>
+            + add(patient: Patient): Patient
+            + remove(uuid: UUID): void
+            + update(uuid: UUID, patient: Patient): Patient
+            + findById(uuid: UUID): Patient
+            + findAll(): List<Patient>
+            + findAllRetired(): List<Patient>
+            + findAllForeign(): List<Patient>
+        }
+
+
+        Hospital "1" o-- "0..*" Patient : patients
+        HospitalService "1" o- "0..*" Hospital : hospital
+ 
+        
+    }
+    package exceptions {
+       class PatientNotFoundException{}
+       class PatientRepeatException{}
+    }
+
+}
+
+    package WebStorage <<Database>> {
+        
+    }
+
+    StoreService --> WebStorage
+    HttpService --> Backend
+@enduml

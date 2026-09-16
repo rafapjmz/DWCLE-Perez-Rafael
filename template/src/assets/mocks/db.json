@@ -1,0 +1,52 @@
+{
+  "patients": [
+    {
+      "id": 1,
+      "dni": "00000000X",
+      "name": "Carlos, Caballero",
+      "birthAt": "1972-01-01"
+    },
+    {
+      "id": 2,
+      "dni": "00000001X",
+      "name": "Luis, García",
+      "birthAt": "1972-01-01"
+    }
+  ],
+  "retired": [
+    {
+      "id": 1,
+      "dni": "00000002X",
+      "name": "María, Carrasco",
+      "birthAt": "1951-10-10",
+      "retiredCode": "P0001A",
+      "fullRetired": true
+    },
+    {
+      "id": 2,
+      "dni": "00000003X",
+      "name": "Lucas, Fernández",
+      "birthAt": "1949-02-01",
+      "retiredCode": "P0002B",
+      "fullRetired": false
+    }
+  ],
+  "foreign": [
+    {
+      "id": 1,
+      "dni": "00000001F",
+      "name": "Oumaima, Majdi",
+      "birthAt": "1992-09-01",
+      "agreement": false,
+      "support": 0
+    },
+    {
+      "id": 2,
+      "dni": "00000002F",
+      "name": "Angela, Merkel",
+      "birthAt": "1978-03-30",
+      "agreement": true,
+      "support": 6
+    }
+  ]
+}
