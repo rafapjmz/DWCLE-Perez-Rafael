@@ -1,0 +1,39 @@
+{
+  "name": "02-javascript-preparacion",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Código de clase de DWCLE, unidad 2: JavaScript moderno. Sin dependencias: solo Node 22+.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "01": "node --watch 01-hello-world.js",
+    "02": "node --watch 02-variables-and-scope.js",
+    "02b": "node --watch 02b-using.js",
+    "03": "node --watch 03-types-and-comparisons.js",
+    "04": "node --watch 04-control-flow-and-loops.js",
+    "05": "node --watch 05-iterators-and-generators.js",
+    "06": "node --watch 06-array-methods.js",
+    "07": "node --watch 07-arrays-functional.js",
+    "08": "node --watch 08-spread-rest-destructuring.js",
+    "09": "node --watch 09-callbacks.js",
+    "10": "node --watch 10-callback-hell.js",
+    "11": "node --watch 11-modules/app.js",
+    "12": "npx -y vite --open /12-mvp-first/",
+    "13": "npx -y vite --open /13-mvp-todo/",
+    "14": "node --watch 14-exceptions/app.js",
+    "15:01": "node --watch 15-this/01-global.cjs",
+    "15:02": "node --watch 15-this/02-strict.js",
+    "15:03": "node --watch 15-this/03-methods-and-losing-this.js",
+    "15:04": "node --watch 15-this/04-constructors-and-prototype.js",
+    "15:05": "node --watch 15-this/05-call-apply-bind.js",
+    "15:06": "node --watch 15-this/06-arrow-and-callbacks.js",
+    "15:07": "node --watch 15-this/07-classes-and-summary.js",
+    "15": "for f in 15-this/*.cjs 15-this/*.js; do echo; echo \"===== $f =====\"; node \"$f\" || exit 1; done",
+    "all": "for f in 0*.js 1[01]-*.js 11-modules/app.js 14-exceptions/app.js; do echo; echo \"===== $f =====\"; node \"$f\" || exit 1; done && npm run 15",
+    "watch": "node --watch",
+    "web": "npx -y vite --open",
+    "check": "for f in *.js 11-modules/*.js 12-mvp-first/*.js 13-mvp-todo/*.js 13-mvp-todo/*/*.js 14-exceptions/*.js 14-exceptions/*/*.js 15-this/*.js 15-this/*.cjs; do node --check \"$f\" || exit 1; done && echo 'sintaxis OK'"
+  }
+}
