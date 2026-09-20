@@ -80,3 +80,69 @@ console.log('4, freeze es superficial ', frozen.address.city);
 const city = Object.freeze({ city: 'Badajoz' });
 const frozenWithCity = Object.freeze({ name: 'Pepe', address: city });
 console.log('4. freeze con objeto anidado →', frozenWithCity.address.city);
+
+// EJERCICIOS
+//   a) ¿Qué imprime este código y por qué?
+// El setTimeout viene a ser una función que programa la ejecución de una función tras cierto tiempo, en este caso no le tenemos puesto tiempo pero se ejecutará una vez el bucle del for termine, es decir los console.log no saldrán hasta el final, Aquí ya entra el como varía segun es var o let, al ser var y tener ámbito de función no crea una variable en cada iteración, solo existe una compartida, una vez termina el bucle el valor de i es 3. Sin embargo, al ser let y tener ámbito de bloque, crea una variable diferente en cada iteración, por lo que una vez se ejecuta el settimeout, j tiene el valor que tenía en esa iteración.
+for (var i = 0; i < 3; i++) setTimeout(() => console.log('var', i));
+for (let j = 0; j < 3; j++) setTimeout(() => console.log('let', j));
+
+//   b) ¿Cómo harías un "deep freeze" que congele también los objetos anidados?
+
+//Junto a un poco de ayuda del claude
+//Crearíamos una función que le entre por parámetros un objeto.
+function deepFreeze(object){
+  Object.freeze(object); //Aquí congelaría de primeras el objeto, pero claro, el interior de ese objeto aún se podría modificar, tendríamos que ir dentro de este objeto congelando cada uno de ellos
+
+  //Por lo tanto, con el .keys obtenemos un array de texto de esas propiedades del objeto, si por ejemplo tenemos usuario con nombre,edad y ciudad, nos da un array de estas 3 ultimas.
+  const propiedades = Object.keys(object);
+  //Hacemos un for each pero de javascript 
+  for(const propiedad of propiedades){
+    //Metemos cada propiedad en una constante para ir checkeando cada una y ver si esta congelada
+    const valor = object[propiedad];
+
+    if(valor && typeof valor === 'object' && !Object.isFrozen(valor)){
+      deepFreeze(valor); //Volvemos a llamar a la misma función y congelamos nuevamente, recursividad
+    }
+  }
+
+  return Object.freeze(object); //Devolvemos el objeto congelado
+
+}
+
+/**
+ * Otra manera:
+ * const frozen = {name: 'Paco el chocolatero', address: {city: 'Córdoba', street: 'Calle Lorenzo'}};
+
+function deepFreeze(object) { //para llevarlo a la práctica he tenido que hacer lluvia de ideas con Claudia.
+    Object.freeze(object);
+    const claves = Object.keys(object);
+    for (let i = 0; i < claves.length; i++) {
+        const clave = claves[i];
+        const valor = object[clave];
+        if (typeof valor === 'object' && valor !== null) {
+            deepFreeze(valor);
+        }
+    }
+    return object;
+}
+ */
+
+
+//Creamos un usuario con freeze, el congelado no es profundo
+const usuario = Object.freeze ({name: 'Luis', address: {city:'Malaga', street: {number:2, PC: 29670}}});
+
+//Le cambiamos el nombre a la ciudad y veremos que si nos deja y sale cordoba
+usuario.address.city = 'Cordoba';
+console.log(usuario.address.city);
+
+//Creamos un usuario con deepfreeze, no podría cambiar la ciudad o la calle..., ya que es profundo.
+const usuarioFreeze = deepFreeze({name: 'Luis', address: {city:'Malaga', street: {number:2, PC: 29670}}});
+
+//Tenemos que hacer un trycatch porque sino explota ya que hemos hecho que no nos deje
+try {
+  usuarioFreeze.address.city = 'Cordoba';
+} catch (error) {
+  console.log('ERROR has intentado hacer un cambio profundo', error.message);
+}
+console.log(usuarioFreeze.address.city); //Malaga
