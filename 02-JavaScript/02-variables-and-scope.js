@@ -95,7 +95,8 @@ function deepFreeze(object){
   Object.freeze(object); //Aquí congelaría de primeras el objeto, pero claro, el interior de ese objeto aún se podría modificar, tendríamos que ir dentro de este objeto congelando cada uno de ellos
 
   //Por lo tanto, con el .keys obtenemos un array de texto de esas propiedades del objeto, si por ejemplo tenemos usuario con nombre,edad y ciudad, nos da un array de estas 3 ultimas.
-  const propiedades = Object.keys(object);
+  const propiedades = Object.keys(object); //Aquí lo mejor sería usar el getownpropertynames, ya que nos devuelve todas las propiedades, pero para este caso nos vale con el keys.
+
   //Hacemos un for each pero de javascript 
   for(const propiedad of propiedades){
     //Metemos cada propiedad en una constante para ir checkeando cada una y ver si esta congelada
