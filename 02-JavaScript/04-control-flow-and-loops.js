@@ -119,7 +119,7 @@ console.log([1,2].concat(['a','b'])); //[1,2,]
 //      for…of + entries() y con filter. ¿Cuál es más legible?
 
 const words2 = ["one", "two", "three", "four", "five"];
-//Con for normal
+//Con for normal, solo funciona en una cpu
 //Posiciones pares
 for(let i=0;i<words2.length;i+=2){
   console.log(i,words2[i])
@@ -133,28 +133,37 @@ for(let i=1;i<words2.length;i+=2){
 //Como el .entries devuelves tanto clave como valor tenemos que crear un iterador de pares
 console.log("Pares con for of");
 for(const [i,word] of words2.entries()){
-  if(i%2==0) console.log(i,word);
+  if(i%2==0) {
+    console.log(i,word);
+  }
 }
 
 console.log("Impares con for of");
 for(const [i,word] of words2.entries()){
-  if(i%2!==0) console.log(i,word);
+  if(i%2!==0) {
+     console.log(i,word);
+  }
 }
-
+1
 //filter, es un método de los arrays que sirve para quedarte solo con los elementos que cumplen una condición, devolviendo un nuevo array
 console.log("Pares con el filter");
-const pares = words2.filter((words2,i) => i%2 == 2);
+const pares = words2.filter((words2,index) => index%2 == 2);
 console.log("Pares: ", pares);
 
 console.log("Impares con el filter");
-const impares = words2.filter((words2,i) => i%2 !== 2);
+const impares = words2.filter((words2,index) => index%2 !== 2);
 console.log("Impares: ", pares);
 
+
+//Se puede hacer así, más legible y el mejor
+const isEven = (word2, index) => index % 2 ===0;
+const evenWords = words2.filter(isEven);
+console.log("Filter par "+evenWords);
 
 
 //   b) ¿Cuándo y por qué tiene sentido escribir  for (;;) { … }  ? ¿Qué lo diferencia de while (true)?
 
-//El for(;;) es un bucle infinito, el cual omite la inicializacion, condición e incremento, no hay condición que lo detenga, sigue hasta que algo dentro lo rompa, un break, un return, o una excepcion, es igual que el while(true), lo único que lo diferencia es que se ve mejor la condición en el while por lo que se diferencia mejor que es infinito.
+//El for(;;) es un bucle infinito, el cual omite la inicializacion, condición e incremento, no hay condición que lo detenga, sigue hasta que algo dentro lo rompa, un break, un return, o una excepcion, es igual que el while(true), lo único que lo diferencia es que se ve mejor la condición en el while por lo que se diferencia mejor que es infinito. Esto no tiene sentido en javascript, en frontend. ESTO EN JAVASCRIPT NEVER, NUNCA NUNCA, ESTO ES UNA ESTRUCTURA CLÁSICA DE C.
 
 
 //   c) ¿Qué pasa si haces `return` dentro de un forEach? ¿Y `break`? Pruébalo.
@@ -164,7 +173,7 @@ word.forEach((word,i)=>{
   if(i===2)return;
   console.log(i,word);
 });
-//El return no sale del bucle solo sale de la función en esa iteración, tal cual como un continue, se salta el elemento actual y el bucle sigue
+//El return no sale del bucle solo sale de la función en esa iteración, tal cual como un continue, se salta el elemento actual y el bucle sigue, COMO ES UNA FUNCION SALTA LA ITERACION
 
 //Prueba con el break
 /*
@@ -173,4 +182,4 @@ word.forEach((word,i)=>{
   console.log(i,word);
 });
 */
-//Sale error, el break solo es valido en bucles reales, forEach es una fnuución como tal, no tiene bucle de verdad
+//Sale error, el break solo es valido en bucles reales, forEach es una fnuución como tal, no tiene bucle de verdad. BREAK ES UNA PALABRA RESERVADA POR ESTRUCTURA DE CONTROL.

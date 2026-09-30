@@ -121,12 +121,12 @@ console.log(settings);
 
 
 //   b) ¿Cuándo preferirías || a ?? y al revés? Piensa en un formulario donde el usuario escribe 0.
-// Usaríamos el ||, este nos sirve por si quieres que se asigne un valor por defecto usaríamos el ||, devuelve el valor a su derecha, porque ha detectado un valor falso (false, 0, "" cadena vacia, NaN, null o undefined) por ejemplo:
+// Usaríamos el ||, este nos sirve por si quieres que se asigne un valor por defecto usaríamos el ||, devuelve el valor a su derecha, porque ha detectado un valor falsy (false, 0, "" cadena vacia, NaN, null o undefined) por ejemplo:
 const introducido = 0;
 const total = introducido || 2; //Devuelve 2 porque 0 es falso
 console.log('Prueba1: ' +total);
 
-//El ?? nos sirve para devolver el valor a la derecha unicamente si el valor introducido en el formulario e snull o undefined, respeta los ceros, las cadenas vacias, solo si falta el dato de forma estricta.
+//El ?? nos sirve para devolver el valor a la derecha unicamente si el valor introducido en el formulario es null o undefined, respeta los ceros, las cadenas vacias, solo si falta el dato de forma estricta. SI VAMOS A TRABAJAR CON NÚMEROS ESTE MEJOR
 const introducido2 = 0;
 const total2 = introducido2 ?? 2; //Devuelve 0 porque 0 no es null ni undefined
 console.log('Prueba2: ' + total2);
@@ -139,9 +139,16 @@ console.log('Prueba2: ' + total2);
 
 if(!Array.prototype.at){ //Si no existe el .at en el navegador, lo creamos
     //lo volvemos una función que le entra un indice
+
+    //No podríamos hacer Array.at, porque prototype es un prototipo que es un objeto clave, que tiene js para clonar, le podemos meter cosas, le vamos cargando funcionalidades estáticas
     Array.prototype.at = function(index){
 
-        //Si el indice es negativo s elo restamos a la longitud total
+        //Si no es entero, que salte un error.
+        if(!isInteger(index)){
+            throw new TypeError("El numero debe ser un número entero");
+        }
+
+        //Si el indice es negativo se lo restamos a la longitud total
         if(index <0){
             index = this.length + index;
         }
